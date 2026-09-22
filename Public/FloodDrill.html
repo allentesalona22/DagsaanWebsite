@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <title>Flood Statistics</title>
+    <!-- Cool Google Fonts -->
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Bowlby+One+SC&display=swap" rel="stylesheet">
+    <!-- Our stylesheet -->
+    <link rel="stylesheet" type="text/css" href="main.css">
+    <!-- font awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css"
+        integrity="sha512-z3gLpd7yknf1YoNbCzqRKc4qyor8gaKU1qmn+CShxbuBusANI9QpRohGBreCFkKxLhei6S9CQXFEbbKuqLg0DA=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+</head>
+
+<body onload="brngy(); notification()">
+    <!-- Sidebar -->
+    <div class="w3-sidebar w3-bar-block w3-border-right" id="mySidebar">
+        <button onclick="w3_close()" class="w3-bar-item w3-large">Close &times;</button>
+        <div class="menu-container">
+            <p class="menu-title">Menu</p>
+            <div class="menu">
+                <i class="fa-solid fa-chart-simple"></i>
+                <a href="#" class="w3-bar-item w3-button" onclick="StatisticNav()">Flood Statistics and Graph</a>
+            </div>
+            <div class="menu">
+                <i class="fa-solid fa-radiation"></i>
+                <a href="#" class="w3-bar-item w3-button" onclick="FHINav()">Flood Hazard</a>
+            </div>
+            <div class="menu">
+                <i class="fa-solid fa-oil-well"></i>
+                <a href="#" class="w3-bar-item w3-button" onclick="FlooddrillNav()">Flood Drill Notification</a>
+            </div>
+        </div>
+        <div class="" style="padding:0 16px">
+            <hr style="height:1px;border-width:0;color:gray;background-color:#bdbdbd">
+        </div>
+        <div class="notif-container">
+            <p>I-click ang time para makita kung saang barangay sinend ang notification</p>
+            <table class="notif" id="notif">
+                <tr>
+                    <th> Dagsaan Notification </th>
+                </tr>
+            </table>
+            <br>
+            <br>
+            <table class="notif" id="drill">
+                <tr>
+                    <th> Dagsaan Drill </th>
+                </tr>
+            </table>
+        </div>
+    </div>
+    <button class="w3-button w3-transparent w3-xlarge" onclick="w3_open()">☰</button>
+
+    <div id="Drillcontent_container">
+        <div id="form_container">
+            <div id="Drillform_header_container">
+                <h2 id="form_header"> Message Dissemination </h2>
+            </div>
+            <div id="form_content_container">
+                <div id="form_content_inner_container">
+                    <div id="Drillform_content_container">
+                        <div id="Drillform_content_inner_container">
+                            <p><strong>ENTER YOUR MESSAGE</strong></p>
+                            <p>Pick a one message</p>
+                            <div class="prep-message-btn">
+                                <button class="emergencyBtn">DRILL</button>
+                                <button class="emergencyBtn">BAHA</button>
+                                <button class="emergencyBtn">Announcement</button>
+                            </div>
+                            <textarea name="paragraph_text" id="msg" cols="30" rows="10"></textarea>
+                            <br>
+                            <br>
+                            <div class="message-brgy">
+                                <label for="barangay">Select a Barangay</label>
+                                <select name="barangay" id="barangay">
+                                </select>
+                            </div>
+                            <div id="Drillbutton_container">
+                                <button onclick="selected()">Select</button>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+</body>
+
+<!-- message function -->
+<script>
+    const emergencyButtons = document.querySelectorAll(".emergencyBtn");
+    const textarea = document.querySelector("#msg");
+
+    emergencyButtons.forEach(function (button) {
+        button.addEventListener("click", function () {
+            let placeholder = "___(editable)";
+            let message = "";
+
+            if (button.textContent === "DRILL") {
+                const location = "___(editable)";
+                placeholder = `___(editable)`;
+                message = `A flood drill is initiated on ${location}. This flood drill will be located at ${placeholder}. Please kindly participate, thank you. Ingat, Bacooreños.`;
+            } else if (button.textContent === "BAHA") {
+                const alertLocation = "___(editable)";
+                message = `Be alert at ${alertLocation}. There is a chance of flooding at your location. Save your batteries in case of blackout, take relocation center as early as possible, and ready your GO Emergency pack. The disaster risk reduction agencies are on patrol in case of flood rush. Ingat, Bacooreños.`;
+            } else if (button.textContent === "Announcement") {
+                const typhoonName = "___(editable)";
+                message = `Bagyong ${typhoonName} is near the Philippine Area of Responsibility. Be prepared for strong winds and rain. Emergency hotlines can be seen at your application. Ingat, Bacooreños.`;
+            }
+
+            message = message.replace(/___\(editable\)/g, placeholder);
+            textarea.value = message;
+        });
+    });
+</script>
+
+<!-- The core Firebase JS SDK is always required and must be listed first -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.6.8/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.6.8/firebase.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.6.8/firebase-messaging.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.6.8/firebase-database.js"></script>
+<script src="flooddrill.js"></script>
+<script src="main.js"></script>
+
+</html>

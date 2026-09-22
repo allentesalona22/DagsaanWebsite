@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <title>Flood Statistics</title>
+    <!-- Cool Google Fonts -->
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Bowlby+One+SC&display=swap" rel="stylesheet">
+    <!-- Our stylesheet -->
+    <link rel="stylesheet" type="text/css" href="main.css">
+    <!-- font awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css"
+        integrity="sha512-z3gLpd7yknf1YoNbCzqRKc4qyor8gaKU1qmn+CShxbuBusANI9QpRohGBreCFkKxLhei6S9CQXFEbbKuqLg0DA=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
+</head>
+
+<body onload="brngyDD(); notification()">
+    <!-- Sidebar -->
+    <div class="w3-sidebar w3-bar-block w3-border-right" id="mySidebar">
+        <button onclick="w3_close()" class="w3-bar-item w3-large">Close &times;</button>
+        <div class="menu-container">
+            <p class="menu-title">Menu</p>
+            <div class="menu">
+                <i class="fa-solid fa-chart-simple"></i>
+                <a href="#" class="w3-bar-item w3-button">Flood Statistics and Graph</a>
+            </div>
+            <div class="menu">
+                <i class="fa-solid fa-radiation"></i>
+                <a href="#" class="w3-bar-item w3-button" onclick="FHINav()">Flood Hazard</a>
+            </div>
+            <div class="menu">
+                <i class="fa-solid fa-oil-well"></i>
+                <a href="#" class="w3-bar-item w3-button" onclick="FlooddrillNav()">Flood Drill Notification</a>
+            </div>
+        </div>
+        <div class="" style="padding:0 16px">
+            <hr style="height:1px;border-width:0;color:gray;background-color:#bdbdbd">
+        </div>
+        <div class="notif-container">
+            <p>I-click ang time para makita kung saang barangay sinend ang notification</p>
+            <table class="notif" id="notif">
+                <tr>
+                    <th> Dagsaan Notification </th>
+                </tr>
+            </table>
+            <br>
+            <br>
+            <table class="notif" id="drill">
+                <tr>
+                    <th> Dagsaan Drill </th>
+                </tr>
+            </table>
+        </div>
+    </div>
+    <button class="w3-button w3-transparent w3-xlarge" onclick="w3_open()">☰</button>
+
+    <div id="statscontent_container" style="padding: 0 50px">
+        <div id="form_container">
+            <div id="statsform_header_container">
+                <h2 id="form_header"> Flood Hazard Statistics </h2>
+            </div>
+
+            <div id="statsform_content_container">
+                <div id="statsform_content_inner_container">
+                    <div class="info-date-brgy">
+                        <label for="date">Date: Year/Month/Day</label>
+                        <select name="year" id="year">
+                            <option value="2023">2023</option>
+                        </select>
+                        <select id="mo"></select>
+                        <select id="daynumb"></select>
+                        <!-- <select name="month" id="month"></select>
+                        <select name="day" id="day"></select> -->
+                        <button onclick="brnsel()">Select</button>
+                        <label id="first" style="color:#FF0000; visibility: hidden;">Please Check your DATE!</label>
+                        <br>
+                        <label for="brn">Choose a Barangay:</label>
+                        <select name="barangay" id="barangay">
+                            <option value='bacoor'>Bacoor</option>
+                        </select>
+                    </div>
+                    <br>
+                    <p style="font-size:30px; font-family: Montserrat;"><b> Flood Hazard Legend </b></p>
+                    <p style="color:blue; font-family: Montserrat;">Low Chance</p>
+                    <p style="color:orange; font-family: Montserrat;">Moderate Chance</p>
+                    <p style="color:red; font-family: Montserrat;">High Chance</p>
+                    <hr style="height:2px;border-width:0;color:gray;background-color:#bdbdbd; margin: 50px 0 50px 0">
+                    <canvas id="lineChart" height="800" width="2000"></canvas>
+                    <div class="info-date-brgy">
+                        <label for="date">Date: Year/Month/Day</label>
+                        <select name="year" id="year">
+                            <option value="2023">2023</option>
+                        </select>
+                        <select name="month" id="month"></select>
+                        <select name="day" id="day"></select>
+                        <button onclick="brnsel()">Select</button>
+                        <label id="first" style="color:#FF0000; visibility: hidden;">Please Check your DATE!</label>
+                        <br>
+                        <label for="brn">Choose a Barangay:</label>
+                        <select name="barangay" id="barangay">
+                            <option value='bacoor'>Bacoor</option>
+                        </select>
+                        <label for="int">Flood Chance: </label>
+                        <select id="chance">
+                            <option>-</option>
+                            <option>Low</option>
+                            <option>Moderate</option>
+                            <option>High</option>
+                        </select>
+                    </div>
+                    <br>
+                    <div class="table-responsive" id="table_container">
+                        <table class="table" id="tbl">
+                            <thead>
+                                <tr>
+                                    <th>Barangay</th>
+                                    <th>Date</th>
+                                    <th>Calculated Average FHI</th>
+                                    <th>Intensity</th>
+                                </tr>
+                            </thead>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+<!-- The core Firebase JS SDK is always required and must be listed first -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.6.8/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.6.8/firebase-auth.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.6.8/firebase-database.js"></script>
+<script src="main.js"></script>
+<script src="statistics.js"></script>
+
+</html>

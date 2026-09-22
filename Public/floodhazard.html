@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <title>Flood Hazard</title>
+    <!-- Cool Google Fonts -->
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Bowlby+One+SC&display=swap" rel="stylesheet">
+    <!-- Our stylesheet -->
+    <link rel="stylesheet" type="text/css" href="floodhazard.css">
+    <link rel="stylesheet" type="text/css" href="main.css">
+
+    <!-- font awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css"
+        integrity="sha512-z3gLpd7yknf1YoNbCzqRKc4qyor8gaKU1qmn+CShxbuBusANI9QpRohGBreCFkKxLhei6S9CQXFEbbKuqLg0DA=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+</head>
+
+<body onload="FHI(); brngy(); notification()">
+    <!-- Sidebar -->
+    <div class="w3-sidebar w3-bar-block w3-border-right" id="mySidebar">
+        <button onclick="w3_close()" class="w3-bar-item w3-large">Close &times;</button>
+        <div class="menu-container">
+            <p class="menu-title">Menu</p>
+            <div class="menu">
+                <i class="fa-solid fa-chart-simple"></i>
+                <a href="#" class="w3-bar-item w3-button" onclick="StatisticNav()">Flood Statistics and Graph</a>
+            </div>
+            <div class="menu">
+                <i class="fa-solid fa-radiation"></i>
+                <a href="#" class="w3-bar-item w3-button" onclick="FHINav()">Flood Hazard</a>
+            </div>
+            <div class="menu">
+                <i class="fa-solid fa-oil-well"></i>
+                <a href="#" class="w3-bar-item w3-button" onclick="FlooddrillNav()">Flood Drill Notification</a>
+            </div>
+        </div>
+        <div class="" style="padding:0 16px">
+            <hr style="height:1px;border-width:0;color:gray;background-color:#bdbdbd">
+        </div>
+        <div class="notif-container">
+            <p>I-click ang time para makita kung saang barangay sinend ang notification</p>
+            <table class="notif" id="notif">
+                <tr>
+                    <th> Dagsaan Notification </th>
+                </tr>
+            </table>
+            <br>
+            <br>
+            <table class="notif" id="drill">
+                <tr>
+                    <th> Dagsaan Drill </th>
+                </tr>
+            </table>
+        </div>
+    </div>
+    <button class="w3-button w3-transparent w3-xlarge" onclick="w3_open()">☰</button>
+    <br>
+    <br>
+
+    <div id="table_container">
+        <br>
+        <br>
+        <p style="font-size:30px; font-family: Montserrat;"><b> You can also select a barangay to monitor </b></p>
+        <br>
+        <div class="brgy">
+            <label for="brn"> Select a Barangay </label>
+            <select name="barangay" id="barangay">
+                <option>Bacoor</option>
+            </select>
+            <button id="picked" onclick="filter()">Select </button>
+        </div>
+        <br>
+        <br>
+        <div class="table-responsive">
+            <table class="table" id="myTable">
+                <thead>
+                    <tr>
+                        <th>Barangay</th>
+                        <th>Annual <br> Flow Accumulation</th>
+                        <th>Rainfall Intensity <br>(Update as of <text id="update"></text>)</th>
+                        <th>Geology</th>
+                        <th>Land Use</th>
+                        <th>Slope and Elevation</th>
+                        <th>Distance from Drainage System <br> (Bacoor Bay)</th>
+                    </tr>
+                </thead>
+            </table>
+        </div>
+        <!-- <table id="myTable">
+            <tr>
+                <th>Barangay</th>
+                <th>Annual <br> Flow Accumulation</th>
+                <th>Rainfall Intensity <br>(Update as of <text id="update"></text>)</th>
+                <th>Geology</th>
+                <th>Land Use</th>
+                <th>Slope and Elevation</th>
+                <th>Distance from Drainage System <br> (Bacoor Bay)</th>
+            </tr>
+        </table> -->
+        <br>
+        <div class="pagination" id="myDIV">
+            <a onclick="first()" class="btn active">1</a>
+            <a onclick="second()" class="btn">2</a>
+            <a onclick="third()" class="btn">3</a>
+            <a onclick="fourth()" class="btn">4</a>
+            <a onclick="fifth()" class="btn">5</a>
+            <a onclick="sixth()" class="btn">6</a>
+            <a onclick="seventh()" class="btn">7</a>
+        </div>
+        <br>
+        <br>
+        <br>
+        <hr style="height:2px;border-width:0;color:gray;background-color:#bdbdbd;">
+        <div class=" footer">
+            Data are from the following Sources;
+            <a href="https://hazardhunter.georisk.gov.ph/map#"> hazardhunter.georisk.gov.ph, </a>
+            <a href="https://geoanalytics.georisk.gov.ph/analyze/hazard/single"> geoanalytics.georisk.gov.ph, </a>
+            <a href="https://www.facebook.com/bacoordrrmoffice/"> Bacoor Disaster Risk Reduction and Management Office,
+            </a>
+            Shuttle Radar Topography Mission - Digital Elevation of Bacoor,
+            <a href="https://www.geoportal.gov.ph/"> geoportal.gov.ph, </a> and
+            <a href="https://www.weatherapi.com/"> www.weatherapi.com </a>
+        </div>
+    </div>
+</body>
+<script>
+    var header = document.getElementById("myDIV");
+    var btns = header.getElementsByClassName("btn");
+    for (var i = 0; i < btns.length; i++) {
+        btns[i].addEventListener("click", function () {
+            var current = document.getElementsByClassName("active");
+            current[0].className = current[0].className.replace(" active", "");
+            this.className += " active";
+        });
+    }
+</script>
+<!-- The core Firebase JS SDK is always required and must be listed first -->
+<script src="https://www.gstatic.com/firebasejs/8.6.8/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.6.8/firebase-auth.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.6.8/firebase-database.js"></script>
+<script src="main.js"></script>
+<script src="floodhazard.js"></script>
+
+</html>
